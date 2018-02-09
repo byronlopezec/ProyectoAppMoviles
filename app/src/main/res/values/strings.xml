@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">ProyectoAppMoviles</string>
+    <string name="VerRegistrarVisita">Registrar Visita</string>
+    <string name="VerInformacion">Informacion Museo</string>
+    <string name="button_registrar_visita">Registrar Visita</string>
+    <string name="button_consultar_caso">Buscar Caso</string>
+    <string name="textNombre">Nombre / Grupo</string>
+    <string name="textTelefono">Telefono</string>
+    <string name="text_fecha_inicio">Fecha de la visita</string>
+    <string name="text_fecha_fin">Hora Visita</string>
+    <string name="text_estado">Estado</string>
+    <string name="text_consultar">Ingrese el ID del caso</string>
+    <string name="button_buscar">Buscar</string>
+    <string name="id_abuscar">Caso ID</string>
+
 </resources>
