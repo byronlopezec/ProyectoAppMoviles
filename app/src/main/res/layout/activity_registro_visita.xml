@@ -17,11 +17,11 @@
         android:hint="@string/textNombre"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.242"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintTop_toBottomOf="@+id/id_imagenMuseo"
+        app:layout_constraintVertical_bias="0.012" />
 
     <EditText
         android:id="@+id/id_text_fecha_visita"
@@ -31,11 +31,11 @@
         android:ems="10"
         android:hint="@string/text_fecha_inicio"
         android:inputType="date"
-        android:onClick="setDate"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:onClick="onClick"
+        app:layout_constraintEnd_toStartOf="@+id/ib_obtener_fecha"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/id_text_nombre" />
+
 
     <EditText
         android:id="@+id/id_text_hora_visita"
@@ -44,22 +44,22 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/text_fecha_fin"
-        android:inputType="time"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.583" />
+        android:inputType="date"
+        android:onClick="onClick"
+        app:layout_constraintEnd_toStartOf="@+id/ib_obtener_hora"
+        app:layout_constraintHorizontal_bias="0.811"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_text_fecha_visita" />
 
     <Spinner
         android:id="@+id/id_spinner_numero_visitas"
-        android:layout_width="213dp"
+        android:layout_width="214dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.271"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/id_text_hora_visita" />
 
@@ -72,24 +72,9 @@
         android:hint="@string/textTelefono"
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.242"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/id_spinner_numero_visitas" />
-
-
-    <Button
-        android:id="@+id/id_button_registrar_visita"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@android:color/holo_blue_light"
-        android:onClick="guardarCaso"
-        android:text="@string/button_registrar_visita"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_textTelefono" />
 
     <ImageView
         android:id="@+id/id_imagenMuseo"
@@ -102,5 +87,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo_museo" />
+
+    <ImageButton
+        android:id="@+id/ib_obtener_hora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/colorAccent"
+        android:onClick="onClick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/id_text_hora_visita"
+        app:layout_constraintTop_toBottomOf="@+id/ib_obtener_fecha"
+        app:srcCompat="@mipmap/ic_access_time_white_24dp" />
+
+    <ImageButton
+        android:id="@+id/ib_obtener_fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/colorAccent"
+        android:onClick="onClick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/id_text_fecha_visita"
+        app:layout_constraintTop_toBottomOf="@+id/id_text_nombre"
+        app:srcCompat="@mipmap/ic_event_white_24dp" />
+
+    <Button
+        android:id="@+id/id_button_registrar_visita"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:onClick="guardarCaso"
+        android:text="@string/button_registrar_visita"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_textTelefono" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="-70dp" />
 
 </android.support.constraint.ConstraintLayout>

@@ -1,119 +1,120 @@
 package com.example.bt.proyectoappmoviles;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class RegistroVisita extends AppCompatActivity {
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
-    //Declara las siguientes variables
-    private Calendar calendar;
-    private TextView dateView;
-    private TextView dateView_fin;
-    private int year, month, day;
-    // Variabla auxiliar para determinar si se trata de editar dateView Fin o Inicio
-    private int num_textViewDate;
+import java.util.Calendar;
 
-
-    //Spinner para el Estado del caso
+public class RegistroVisita extends AppCompatActivity implements View.OnClickListener {
+    private static final String CERO = "0";
+    private static final String DOS_PUNTOS = ":";
+    private static final String BARRA = "/";
     private Spinner spinner1;
+    //Calendario para obtener fecha & hora
+    public final Calendar c = Calendar.getInstance();
+
+    //Fecha
+    final int mes = c.get(Calendar.MONTH);
+    final int dia = c.get(Calendar.DAY_OF_MONTH);
+    final int anio = c.get(Calendar.YEAR);
+
+    //Hora
+    final int hora = c.get(Calendar.HOUR_OF_DAY);
+    final int minuto = c.get(Calendar.MINUTE);
+
+    //Widgets
+    EditText etFecha, etHora;
+    ImageButton ibObtenerFecha, ibObtenerHora;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_registro_visita);
 
-        dateView = (TextView) findViewById(R.id.id_text_fecha_visita);
-        //dateView_fin = (TextView) findViewById(R.id.id_text_hora_visita);
+        etFecha = (EditText) findViewById(R.id.id_text_fecha_visita);
+        etHora = (EditText) findViewById(R.id.id_text_hora_visita);
 
-        calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
+        ibObtenerFecha = (ImageButton) findViewById(R.id.ib_obtener_fecha);
+        ibObtenerHora = (ImageButton) findViewById(R.id.ib_obtener_hora);
 
-        num_textViewDate =0;
-        showDate(year, month+1, day);
+        ibObtenerFecha.setOnClickListener(this);
+        ibObtenerHora.setOnClickListener(this);
 
         addItemsOnSpinner1();
 
     }
 
-      /* crear un método setDate que será llamada al momento de dar clic en el botón
-de nuestra actividad.*/
-
-    @SuppressWarnings("deprecation")
-    public void setDate(View view) {
-        num_textViewDate = 0;
-        showDialog(999);
-        Toast.makeText(getApplicationContext(),"Fecha de Inicio",
-                Toast.LENGTH_SHORT).show();
-
-
-    }
-
-    @SuppressWarnings("deprecation")
-    public void setDate1(View view) {
-        num_textViewDate = 1;
-        showDialog(999);
-        Toast.makeText(getApplicationContext(),"Fecha Fin",
-                Toast.LENGTH_SHORT).show();
-
-    }
-
-
-
-    /*La ejecución del método anterior implica que el método onCreateDialog() será llamado automáticamente.
-Es necesario entonces sobrecargar este método para que presente un dialogo tipo DatePicker cuando
-reciba el código 999.*/
     @Override
-    protected Dialog onCreateDialog(int id) {
-        if (id == 999) {
-            return new DatePickerDialog(this, myDateListener, year, month, day);
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ib_obtener_fecha:
+                obtenerFecha();
+                break;
+            case R.id.ib_obtener_hora:
+                obtenerHora();
+                break;
         }
-        return null;
     }
 
+    private void obtenerFecha(){
+        DatePickerDialog recogerFecha = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-    /* crear un método que nos permita reaccionar ante la fecha seleccionada por el utilizador. */
+                final int mesActual = month + 1;
 
-    private DatePickerDialog.OnDateSetListener myDateListener = new
-            DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3)
-                {
-                    showDate(arg1, arg2+1, arg3);
+                String diaFormateado = (dayOfMonth < 10)? CERO + String.valueOf(dayOfMonth):String.valueOf(dayOfMonth);
+                String mesFormateado = (mesActual < 10)? CERO + String.valueOf(mesActual):String.valueOf(mesActual);
+
+                etFecha.setText(diaFormateado + BARRA + mesFormateado + BARRA + year);
+
+
+            }
+        },anio, mes, dia);
+
+        recogerFecha.show();
+
+    }
+
+    private void obtenerHora(){
+        TimePickerDialog recogerHora = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                String horaFormateada =  (hourOfDay < 9)? String.valueOf(CERO + hourOfDay) : String.valueOf(hourOfDay);
+                String minutoFormateado = (minute < 9)? String.valueOf(CERO + minute):String.valueOf(minute);
+
+                String AM_PM;
+                if(hourOfDay < 12) {
+                    AM_PM = "a.m.";
+                } else {
+                    AM_PM = "p.m.";
                 }
-            };
 
+                etHora.setText(horaFormateada + DOS_PUNTOS + minutoFormateado + " " + AM_PM);
+            }
 
-    /* el método anterior va a llamar al método showDate() que actualizará la fecha del día
-seleccionado en el cuadro de texto correspondiente. E*/
+        }, hora, minuto, false);
 
-    private void showDate(int year, int month, int day) {
-
-        if (num_textViewDate==0) {
-            dateView.setText(new StringBuilder().append(day).append("/")
-                    .append(month).append("/").append(year));
-        }
-
-        if (num_textViewDate==1) {
-            dateView_fin.setText(new StringBuilder().append(day).append("/")
-                    .append(month).append("/").append(year));
-        }
-
+        recogerHora.show();
     }
 
 
@@ -123,7 +124,7 @@ seleccionado en el cuadro de texto correspondiente. E*/
 
         list.add("Numeros Visitantes");
         for(int i =1; i<10;i++)
-        list.add(i+"");
+            list.add(i+"");
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, list);
@@ -131,12 +132,11 @@ seleccionado en el cuadro de texto correspondiente. E*/
         spinner1.setAdapter(dataAdapter);
     }
 
-
     public void guardarCaso(View view) {
 
         DatabaseHandler db = new DatabaseHandler(this);
 
-        //Intent intent = new Intent(this,ConsultaCasos.class);
+        Intent intent = new Intent(this,RegistroResultado.class);
 
         EditText editTextNombre = (EditText) findViewById(R.id.id_text_nombre); //para extraer informacion de esa parte
         String stringTextNombre = editTextNombre.getText().toString();//convertir en un string lo que esta en editTExt
@@ -155,11 +155,11 @@ seleccionado en el cuadro de texto correspondiente. E*/
         String stringeditTelefono = editTextTelefono.getText().toString();//convertir en un string lo que esta en editTExt
 
 
-
-        //intent.putExtra(EXTRA_MESSAGE, message); //enviar lo que esta en ese texto a la otra actividad
+        String message = "Registro Guardado con éxito";
+        intent.putExtra(EXTRA_MESSAGE, message); //enviar lo que esta en ese texto a la otra actividad
         db.addCaso(new Visita(stringTextNombre,stringeditTextfecha_visita,stringTextNumeroVisitas,stringeditHora_visita,stringeditTelefono));
 
-       // startActivity(intent);
+        startActivity(intent);
     }
 
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProyectoAppMoviles</string>
+    <string name="app_name">AppMóvil-Gustavo Orces</string>
     <string name="VerRegistrarVisita">Registrar Visita</string>
     <string name="VerInformacion">Informacion Museo</string>
     <string name="button_registrar_visita">Registrar Visita</string>
@@ -12,5 +12,12 @@
     <string name="text_consultar">Ingrese el ID del caso</string>
     <string name="button_buscar">Buscar</string>
     <string name="id_abuscar">Caso ID</string>
+
+
+    <string name="titlulo_pickers">Obtener fecha y hora</string>
+
+    <string name="formato_fecha">dd/mm/yyyy</string>
+    <string name="formato_hora">hh:mm</string>
+
 
 </resources>
