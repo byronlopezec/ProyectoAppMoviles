@@ -120,7 +120,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="@android:color/holo_blue_light"
-        android:onClick="guardarCaso"
+        android:onClick="guardarVisita"
         android:text="@string/button_registrar_visita"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"

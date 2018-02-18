@@ -132,34 +132,42 @@ public class RegistroVisita extends AppCompatActivity implements View.OnClickLis
         spinner1.setAdapter(dataAdapter);
     }
 
-    public void guardarCaso(View view) {
-
-        DatabaseHandler db = new DatabaseHandler(this);
+    public void guardarVisita(View view) {
 
         Intent intent = new Intent(this,RegistroResultado.class);
 
-        EditText editTextNombre = (EditText) findViewById(R.id.id_text_nombre); //para extraer informacion de esa parte
-        String stringTextNombre = editTextNombre.getText().toString();//convertir en un string lo que esta en editTExt
-
-        EditText editTextfecha_visita = (EditText) findViewById(R.id.id_text_fecha_visita); //para extraer informacion de esa parte
-        String stringeditTextfecha_visita = editTextfecha_visita.getText().toString();//convertir en un string lo que esta en editTExt
-
-        Spinner spinnerNumeroVisitas = (Spinner) findViewById(R.id.id_spinner_numero_visitas); //para extraer informacion de esa parte
-        String stringTextNumeroVisitas = spinner1.getSelectedItem().toString();//convertir en un string lo que esta en editTExt
+        EditText et_nombre = (EditText) findViewById(R.id.id_text_nombre); //para extraer informacion de esa parte
+        EditText et_fecha_visita = (EditText) findViewById(R.id.id_text_fecha_visita); //para extraer informacion de esa parte
+        Spinner sp_numero_visitas = (Spinner) findViewById(R.id.id_spinner_numero_visitas); //para extraer informacion de esa parte
+        EditText et_hora_visita = (EditText) findViewById(R.id.id_text_hora_visita); //para extraer informacion de esa parte
+        EditText et_telefono = (EditText) findViewById(R.id.id_textTelefono); //para extraer informacion de esa parte
 
 
-        EditText editTextHora_visita = (EditText) findViewById(R.id.id_text_hora_visita); //para extraer informacion de esa parte
-        String stringeditHora_visita = editTextHora_visita.getText().toString();//convertir en un string lo que esta en editTExt
-
-        EditText editTextTelefono = (EditText) findViewById(R.id.id_textTelefono); //para extraer informacion de esa parte
-        String stringeditTelefono = editTextTelefono.getText().toString();//convertir en un string lo que esta en editTExt
-
+        String nombre = et_nombre.getText().toString();//convertir en un string lo que esta en editTExt
+        String fecha_visita = et_fecha_visita.getText().toString();//convertir en un string lo que esta en editTExt
+        String hora_visita = et_hora_visita.getText().toString();//convertir en un string lo que esta en editTExt
+        String numero_visitas = sp_numero_visitas.getSelectedItem().toString();//convertir en un string lo que esta en editTExt
+        String telefono = et_telefono.getText().toString();//convertir en un string lo que esta en editTExt
 
         String message = "Registro Guardado con éxito";
         intent.putExtra(EXTRA_MESSAGE, message); //enviar lo que esta en ese texto a la otra actividad
-        db.addCaso(new Visita(stringTextNombre,stringeditTextfecha_visita,stringTextNumeroVisitas,stringeditHora_visita,stringeditTelefono));
 
+
+
+        String INSERT = "localhost/insertar_visita.php";
+        WebServiceDatabase conexionWebService = new WebServiceDatabase();
+        conexionWebService.execute(INSERT,"3",
+                nombre,
+                fecha_visita,
+                numero_visitas,
+                hora_visita,
+                telefono);   // Parámetros que recibe doInBackground
         startActivity(intent);
     }
+    /*
+     *
+     * */
+
+
 
 }
