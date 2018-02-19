@@ -2,9 +2,11 @@ package com.example.bt.proyectoappmoviles;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -22,6 +24,7 @@ import java.util.List;
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
 
 public class RegistroVisita extends AppCompatActivity implements View.OnClickListener {
     private static final String CERO = "0";
@@ -30,6 +33,7 @@ public class RegistroVisita extends AppCompatActivity implements View.OnClickLis
     private Spinner spinner1;
     //Calendario para obtener fecha & hora
     public final Calendar c = Calendar.getInstance();
+
 
     //Fecha
     final int mes = c.get(Calendar.MONTH);
@@ -52,13 +56,17 @@ public class RegistroVisita extends AppCompatActivity implements View.OnClickLis
         etFecha = (EditText) findViewById(R.id.id_text_fecha_visita);
         etHora = (EditText) findViewById(R.id.id_text_hora_visita);
 
+        //botones que permite por medio de una imagen llamar a datapicker y timepicker dialog
         ibObtenerFecha = (ImageButton) findViewById(R.id.ib_obtener_fecha);
         ibObtenerHora = (ImageButton) findViewById(R.id.ib_obtener_hora);
 
+
+       // obtenerFecha();
         ibObtenerFecha.setOnClickListener(this);
         ibObtenerHora.setOnClickListener(this);
 
         addItemsOnSpinner1();
+
 
     }
 
@@ -75,12 +83,14 @@ public class RegistroVisita extends AppCompatActivity implements View.OnClickLis
     }
 
     private void obtenerFecha(){
-        DatePickerDialog recogerFecha = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+        DatePickerDialog recogerFecha;
+        recogerFecha=  new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
 
                 final int mesActual = month + 1;
-
                 String diaFormateado = (dayOfMonth < 10)? CERO + String.valueOf(dayOfMonth):String.valueOf(dayOfMonth);
                 String mesFormateado = (mesActual < 10)? CERO + String.valueOf(mesActual):String.valueOf(mesActual);
 
@@ -88,10 +98,10 @@ public class RegistroVisita extends AppCompatActivity implements View.OnClickLis
 
 
             }
+
         },anio, mes, dia);
-
+        recogerFecha.getDatePicker().setMinDate(System.currentTimeMillis());
         recogerFecha.show();
-
     }
 
     private void obtenerHora(){
@@ -110,8 +120,8 @@ public class RegistroVisita extends AppCompatActivity implements View.OnClickLis
                 }
 
                 etHora.setText(horaFormateada + DOS_PUNTOS + minutoFormateado + " " + AM_PM);
-            }
 
+            }
         }, hora, minuto, false);
 
         recogerHora.show();
@@ -123,8 +133,7 @@ public class RegistroVisita extends AppCompatActivity implements View.OnClickLis
         List<String> list = new ArrayList<String>();
 
         list.add("Numeros Visitantes");
-        for(int i =1; i<10;i++)
-            list.add(i+"");
+        for(int i =1; i<10;i++)            list.add(i+"");
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, list);
@@ -152,17 +161,24 @@ public class RegistroVisita extends AppCompatActivity implements View.OnClickLis
         String message = "Registro Guardado con éxito";
         intent.putExtra(EXTRA_MESSAGE, message); //enviar lo que esta en ese texto a la otra actividad
 
-
-
-        String INSERT = "localhost/insertar_visita.php";
         WebServiceDatabase conexionWebService = new WebServiceDatabase();
+/*
+        String GET= "http://10.0.2.1/obtener_visita_por_fecha_hora.php?fecha_visita='"+fecha_visita+"'&hora_visita='"+hora_visita+"'";
+        conexionWebService.execute(GET,"1");   // Parámetros que recibe
+        String cadena = conexionWebService.resultado;
+*/
+
+
+        //instruccion para insertar datos en nuestro servidor web...
+        String INSERT = "http://10.0.2.1/insertar_visita.php";
         conexionWebService.execute(INSERT,"3",
                 nombre,
                 fecha_visita,
-                numero_visitas,
                 hora_visita,
+                numero_visitas,
                 telefono);   // Parámetros que recibe doInBackground
         startActivity(intent);
+
     }
     /*
      *

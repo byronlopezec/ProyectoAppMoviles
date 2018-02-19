@@ -1,7 +1,16 @@
 package com.example.bt.proyectoappmoviles;
 
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +35,9 @@ import java.net.URL;
 
 public class WebServiceDatabase extends AsyncTask<String,Void,String> {
 
+    public String resultado="" ;
+
+
     @Override
     protected String doInBackground(String... params) {
 
@@ -33,23 +45,23 @@ public class WebServiceDatabase extends AsyncTask<String,Void,String> {
         URL url = null; // Url de donde queremos obtener información
         String devuelve ="";
 
-
-
-        if(params[1]=="1"){    // Consulta de todas las Visitas
+        if(params[1]=="1"){    // Consulta de todos los alumnos
 
             try {
+
                 url = new URL(cadena);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection(); //Abrir la conexión
-                connection.setRequestProperty("User-Agent", "Mozilla/5.0" +
-                        " (Linux; Android 1.5; es-ES) Ejemplo HTTP");
-                //connection.setHeader("content-type", "application/json");
+                connection.setRequestProperty("User-Agent", "Mozilla/58 (Linux; Android 3.0.1; es-ES) Ejemplo HTTP");
 
                 int respuesta = connection.getResponseCode();
                 StringBuilder result = new StringBuilder();
 
+
                 if (respuesta == HttpURLConnection.HTTP_OK){
 
+
                     InputStream in = new BufferedInputStream(connection.getInputStream());  // preparo la cadena de entrada
+
 
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));  // la introduzco en un BufferedReader
 
@@ -61,94 +73,44 @@ public class WebServiceDatabase extends AsyncTask<String,Void,String> {
                     while ((line = reader.readLine()) != null) {
                         result.append(line);        // Paso toda la entrada al StringBuilder
                     }
-
                     //Creamos un objeto JSONObject para poder acceder a los atributos (campos) del objeto.
                     JSONObject respuestaJSON = new JSONObject(result.toString());   //Creo un JSONObject a partir del StringBuilder pasado a cadena
                     //Accedemos al vector de resultados
-
                     String resultJSON = respuestaJSON.getString("estado");   // estado es el nombre del campo en el JSON
 
-                    if (resultJSON=="1"){      // hay visitas a mostrar
+                    if (resultJSON.equals("1")){      // hay visitas a mostrar
+
                         JSONArray visitaJSON = respuestaJSON.getJSONArray("visita");   // estado es el nombre del campo en el JSON
 
                         for(int i=0;i<visitaJSON.length();i++){
-                            devuelve = devuelve + visitaJSON.getJSONObject(i).getString("idVisita") + " " +
+
+                            devuelve = devuelve +
+                                    visitaJSON.getJSONObject(i).getString("idVisita") + " " +
                                     visitaJSON.getJSONObject(i).getString("nombre") + " " +
                                     visitaJSON.getJSONObject(i).getString("fecha_visita") + " " +
                                     visitaJSON.getJSONObject(i).getString("hora_visita") + " " +
                                     visitaJSON.getJSONObject(i).getString("numero_visitantes") + " " +
                                     visitaJSON.getJSONObject(i).getString("telefono") + "\n";
+
                         }
-                    }
-                    else if (resultJSON=="2"){
-                        devuelve = "No hay visitas";
-                    }
-                }
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return devuelve;
-
-        }
-        else if(params[1]=="2"){    // consulta visita por id
-
-            try {
-                url = new URL(cadena);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection(); //Abrir la conexión
-                connection.setRequestProperty("User-Agent", "Mozilla/5.0" +
-                        " (Linux; Android 1.5; es-ES) Ejemplo HTTP");
-                //connection.setHeader("content-type", "application/json");
-
-                int respuesta = connection.getResponseCode();
-                StringBuilder result = new StringBuilder();
-
-                if (respuesta == HttpURLConnection.HTTP_OK){
-
-
-                    InputStream in = new BufferedInputStream(connection.getInputStream());  // preparo la cadena de entrada
-
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));  // la introduzco en un BufferedReader
-
-                    // El siguiente proceso lo hago porque el JSONOBject necesita un String y tengo
-                    // que tranformar el BufferedReader a String. Esto lo hago a traves de un
-                    // StringBuilder.
-
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        result.append(line);        // Paso toda la entrada al StringBuilder
-                    }
-
-                    //Creamos un objeto JSONObject para poder acceder a los atributos (campos) del objeto.
-                    JSONObject respuestaJSON = new JSONObject(result.toString());   //Creo un JSONObject a partir del StringBuilder pasado a cadena
-                    //Accedemos al vector de resultados
-
-                    String resultJSON = respuestaJSON.getString("estado");   // estado es el nombre del campo en el JSON
-
-                    if (resultJSON=="1"){      // hay un alumno que mostrar
-                        devuelve = devuelve + respuestaJSON.getJSONObject("visita").getString("idVisita") + " " +
-                                respuestaJSON.getJSONObject("visita").getString("nombre") + " " +
-                                respuestaJSON.getJSONObject("visita").getString("fecha_visita") + " " +
-                                respuestaJSON.getJSONObject("visita").getString("hora_visita") + " " +
-                                respuestaJSON.getJSONObject("visita").getString("numero_visitantes") + " " +
-                                respuestaJSON.getJSONObject("visita").getString("telefono");
 
                     }
                     else if (resultJSON=="2"){
                         devuelve = "No hay visitas";
+                        Log.d(" devuelve: ",devuelve+"");
                     }
-
+                    Log.d(" devuelve: ",devuelve+"");
                 }
+
+
             } catch (MalformedURLException e) {
+                Log.d("MalformedURLException: ",e.getMessage());
                 e.printStackTrace();
             } catch (IOException e) {
+                Log.d("IOException: ",e.getMessage());
                 e.printStackTrace();
             } catch (JSONException e) {
+                Log.d("JSONException: ",e.getMessage());
                 e.printStackTrace();
             }
 
@@ -163,7 +125,7 @@ public class WebServiceDatabase extends AsyncTask<String,Void,String> {
 
                 DataOutputStream printout;
                 DataInputStream input;
-                url = new URL("http://192.168.100.7/insertar_visita.php");
+                url = new URL(cadena);
                 urlConn = (HttpURLConnection) url.openConnection();
                 urlConn.setDoInput(true);
                 urlConn.setDoOutput(true);
@@ -214,6 +176,7 @@ public class WebServiceDatabase extends AsyncTask<String,Void,String> {
                     } else if (resultJSON == "2") {
                         devuelve = "La visita no se pudo registrar!!!";
                     }
+
                 }
 
             } catch (MalformedURLException e) {
@@ -238,6 +201,7 @@ public class WebServiceDatabase extends AsyncTask<String,Void,String> {
     @Override
     protected void onPostExecute(String s) {
         Log.d("on Post Execute : ",s);
+        resultado= s;
         //super.onPostExecute(s);
     }
 
