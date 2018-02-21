@@ -81,9 +81,9 @@ a la carpeta C:\MAMP\htdocs.
 ===
 ---
 # Manuales de usuario y técnico
-[Manual de Usuario] (https://raw.githubusercontent.com/Buhobit/ProyectoAppMoviles/master/app/src/main/res/manuales/Manual%20de%20Usuario%20AppM%C3%B3vil-Gustavo%20Orces.doc)
+[Manual de Usuario](https://raw.githubusercontent.com/Buhobit/ProyectoAppMoviles/master/app/src/main/res/manuales/Manual%20de%20Usuario%20AppM%C3%B3vil-Gustavo%20Orces.doc)
 <br /> <br />
-[Manual técnico] (https://raw.githubusercontent.com/Buhobit/ProyectoAppMoviles/master/app/src/main/res/manuales/Manual%20Tecnico%20AppM%C3%B3vil-Gustavo%20Orces.docx)
+[Manual técnico](https://raw.githubusercontent.com/Buhobit/ProyectoAppMoviles/master/app/src/main/res/manuales/Manual%20Tecnico%20AppM%C3%B3vil-Gustavo%20Orces.docx)
 ---
 ===
 ## Autores:
