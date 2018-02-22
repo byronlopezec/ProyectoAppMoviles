@@ -30,12 +30,12 @@ Ahora vamos a clonar el proyecto, para ello puede seguir el siguiente tutorial
 
 Para nuestro proyecto seguimos los siguientes pasos:
 - #### 3.1 Descargar el proyecto en ZIP
-Descargamos el proyecto .zip como se muestra en la imagen
+Descargamos el proyecto .zip como se muestra en la imagen:
 <br /> <br />
 <img src=https://user-images.githubusercontent.com/25153762/36462677-c7ffb2fc-1692-11e8-9c3a-813fc3a65e33.png >
 
 - #### 3.2 Descomprimir el archivo en nuestro directorio
-Descomprimir el archivo zip en un directorio favorito
+Descomprimir el archivo zip en un directorio favorito:
 <br /> <br />
 ![descomprimirzip](https://user-images.githubusercontent.com/25153762/36452308-fb97162c-1661-11e8-95ac-0f101c0bd107.png)
 
@@ -48,7 +48,7 @@ Ahora abrimos el proyecto desde nuestro Andriod Studio:
 
 
 - #### 3.4 Corregir errores
-Es probable que al construir el proyecto aparezca los siguientes errores
+Es probable que al construir el proyecto aparezca los siguientes errores:
 <br /> <br />
 ![errores](https://user-images.githubusercontent.com/25153762/36503759-2bfa6c1e-171c-11e8-8cd1-a7b0e215d637.PNG)
 
